@@ -9,7 +9,7 @@ def create(rules):
             consists
 
     Returns:
-        KnowledgeBase"""
+        KnowledgeBase"""  # NOQA
 
     base = KnowledgeBase()
     base._rules = []

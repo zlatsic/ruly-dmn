@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1acj2wp" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <decision id="Decision_1od3j2k" name="Dish">
+    <decisionTable id="DecisionTable_082ueac" hitPolicy="FIRST">
+      <input id="InputClause_1xpofod" camunda:inputVariable="season">
+        <inputExpression id="LiteralExpression_0shwu86" typeRef="string">
+          <text>Season</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1o8ho8h">
+          <text>"Fall","Winter","Spring","Summer"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1mdfibl" camunda:inputVariable="vegetarian_guests">
+        <inputExpression id="LiteralExpression_00b711u" typeRef="boolean">
+          <text>Vegetarian Guests</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1hjiayc" name="Dish" typeRef="string" />
+      <rule id="DecisionRule_0ce297f">
+        <inputEntry id="UnaryTests_103mlft">
+          <text>"Fall"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yg8eul">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09lb3uo">
+          <text>"Spareribs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1c70b33">
+        <inputEntry id="UnaryTests_138mcyr">
+          <text>"Winter"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hk4a5e">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cd9cxw">
+          <text>"Roastbeef"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sfpg9h">
+        <inputEntry id="UnaryTests_09z6g0j">
+          <text>"Spring"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xl8hsx">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_148912p">
+          <text>"Steak"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1jn03if">
+        <inputEntry id="UnaryTests_1hul8kx">
+          <text>"Summer"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zqxnon">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10juyb5">
+          <text>"Light Salad and a nice Steak"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0l2kl63">
+        <inputEntry id="UnaryTests_0slnuyo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1woc0v6">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00cjyko">
+          <text>"Pasta"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_17ch0rc" name="Beverages">
+    <informationRequirement id="InformationRequirement_0zezofy">
+      <requiredDecision href="#Decision_1od3j2k" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1s1sp9e" hitPolicy="FIRST">
+      <input id="InputClause_0ukx9gm" camunda:inputVariable="dish">
+        <inputExpression id="LiteralExpression_0nnw0y3" typeRef="string">
+          <text>Dish</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1ol3rpz" camunda:inputVariable="have_children">
+        <inputExpression id="LiteralExpression_05t076z" typeRef="boolean">
+          <text>Guests with children</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0yffs1s" name="Beverage" typeRef="string" biodi:width="281" />
+      <rule id="DecisionRule_0jxzltt">
+        <inputEntry id="UnaryTests_10p1het">
+          <text>"Spareribs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11034u3">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_149herr">
+          <text>"Aecht Schlenkerla Rauchbier"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_19h5j26">
+        <inputEntry id="UnaryTests_0tp72f3">
+          <text>"Stew"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qhogfh">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bqimf4">
+          <text>"Guinness"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1robh5u">
+        <inputEntry id="UnaryTests_1ixt3nq">
+          <text>"Roastbeef"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0h9nqf2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08qo3f1">
+          <text>"Bordeaux"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_063by4d">
+        <inputEntry id="UnaryTests_14jeuxh">
+          <text>"Steak"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q9fcxr">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ys0553">
+          <text>"Pinot Noir"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03ajg09">
+        <inputEntry id="UnaryTests_1dmsiis">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_050zvy9">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1meqj5v">
+          <text>"Apple Juice"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0co4qkj">
+        <inputEntry id="UnaryTests_053m8g3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q6p64o">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pt137p">
+          <text>"Water"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_1gre64x" dmnElementRef="Decision_1od3j2k">
+        <dc:Bounds height="80" width="180" x="160" y="440" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1l50hhx" dmnElementRef="InformationRequirement_0zezofy">
+        <di:waypoint x="250" y="440" />
+        <di:waypoint x="520" y="180" />
+        <di:waypoint x="520" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_07gi0za" dmnElementRef="Decision_17ch0rc">
+        <dc:Bounds height="80" width="180" x="430" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

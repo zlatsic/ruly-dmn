@@ -15,7 +15,7 @@ Attributes:
 
 
 class Operator(enum.Enum):
-    AND = 0
+    AND = 1
 
 
 Expression = namedtuple('Expression', ['operator', 'children'])
@@ -33,7 +33,8 @@ class Condition(abc.ABC):
     evaluating an expression. Must have a name attribute.
 
     Attributes:
-        name (str): name of the variable under which the condition is checked"""
+        name (str): name of the variable under which the condition is
+            checked"""
 
 
 EqualsCondition = namedtuple('EqualsCondition', ['name', 'value'])
@@ -65,3 +66,14 @@ def get_rule_input_variables(rule):
         return set([rule.antecedent.name])
     elif isinstance(rule.antecedent, Expression):
         return set([c.name for c in rule.antecedent.children])
+
+
+def fire_first(rules):
+    """Conflict resolver function, returns the value of the first rule
+
+    Args:
+        rules (List[Rule]): list of rules that fired
+
+    Returns:
+        Any: value of the first rule's consequent"""
+    return rules[0].consequent.value

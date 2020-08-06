@@ -1,20 +1,26 @@
 from bc_dmn.ruly import common
 
 
-def backward_chain(knowledge_base, output_name, **kwargs):
+def backward_chain(knowledge_base, output_name,
+                   conflict_resolver=common.fire_first, **kwargs):
     """Evaulates the output using backward chaining
 
     Args:
         knowledge_base (bc_dmn.ruly.KnowledgeBase): knowledge base
         output_name (str): name of the output variable
+        conflict_resolver (Callable[List[bc_dmn.ruly.Rule], Any]): function
+            used to determine how value is calculated if multiple rules should
+            fire at same variable
         kwargs: names and values of input variables
 
     Returns:
-        Any: evaluated value of the goal variable"""
+        Dict[str, Any]: evaluator state, keys are variable names and values are
+            their values"""
     state = {
         name: kwargs.get(name)
         for name in knowledge_base.input_variables.union(
             knowledge_base.derived_variables)}
+    fired_rules = []
     for rule in knowledge_base.rules:
         if rule.consequent.name != output_name:
             continue
@@ -23,12 +29,16 @@ def backward_chain(knowledge_base, output_name, **kwargs):
                 if variable in knowledge_base.input_variables:
                     # TODO handle missing inputs
                     break
-                state[variable] = backward_chain(knowledge_base, variable,
-                                                 **state)
+                state = backward_chain(knowledge_base, variable, **state)
+                if state[variable] is None:
+                    # TODO derived variable not calculated, handle this
+                    break
         if evaluate(state, rule.antecedent):
-            return rule.consequent.value
+            fired_rules.append(rule)
 
-    return None
+    if fired_rules:
+        state[output_name] = conflict_resolver(fired_rules)
+    return state
 
 
 def evaluate(inputs, antecedent):
@@ -38,6 +48,7 @@ def evaluate(inputs, antecedent):
         inputs (Dict[str, Any]): variable values
         antecedent (Union[bc_dmn.ruly.Expression, bc_dmn.ruly.Condition]): rule
             antecedent
+
     Returns:
         bool"""
     if isinstance(antecedent, common.Condition):
