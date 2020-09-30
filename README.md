@@ -1,4 +1,4 @@
-# `ruly-dmn`
+# Ruly-DMN
 
 `ruly-dmn` is a python package that offers a limited implementation of the DMN
 standard, with additional features. It relies on the `ruly` rule engine to make
