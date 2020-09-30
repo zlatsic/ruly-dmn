@@ -1,0 +1,174 @@
+<ns0:definitions xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:ns1="http://camunda.org/schema/1.0/dmn" xmlns:ns2="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:ns3="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:ns4="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:ns5="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1acj2wp" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <ns0:decision id="Decision_1od3j2k" name="Dish">
+    <ns0:decisionTable id="DecisionTable_082ueac" hitPolicy="FIRST">
+      <ns0:input id="InputClause_1xpofod" ns1:inputVariable="season">
+        <ns0:inputExpression id="LiteralExpression_0shwu86" typeRef="string">
+          <ns0:text>Season</ns0:text>
+        </ns0:inputExpression>
+        <ns0:inputValues id="UnaryTests_1o8ho8h">
+          <ns0:text>"Fall","Winter","Spring","Summer"</ns0:text>
+        </ns0:inputValues>
+      </ns0:input>
+      <ns0:input id="InputClause_1mdfibl" ns1:inputVariable="vegetarian_guests">
+        <ns0:inputExpression id="LiteralExpression_00b711u" typeRef="boolean">
+          <ns0:text>Vegetarian Guests</ns0:text>
+        </ns0:inputExpression>
+      </ns0:input>
+      <ns0:output id="OutputClause_1hjiayc" name="Dish" typeRef="string" />
+      <ns0:rule id="DecisionRule_0ce297f">
+        <ns0:inputEntry id="UnaryTests_103mlft">
+          <ns0:text>"Fall"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0yg8eul">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_09lb3uo">
+          <ns0:text>"Spareribs"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_1c70b33">
+        <ns0:inputEntry id="UnaryTests_138mcyr">
+          <ns0:text>"Winter"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_1hk4a5e">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_1cd9cxw">
+          <ns0:text>"Roastbeef"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_1sfpg9h">
+        <ns0:inputEntry id="UnaryTests_09z6g0j">
+          <ns0:text>"Spring"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0xl8hsx">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_148912p">
+          <ns0:text>"Steak"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_1jn03if">
+        <ns0:inputEntry id="UnaryTests_1hul8kx">
+          <ns0:text>"Summer"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0zqxnon">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_10juyb5">
+          <ns0:text>"Light Salad and a nice Steak"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_0l2kl63">
+        <ns0:inputEntry id="UnaryTests_0slnuyo">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_1woc0v6">
+          <ns0:text>true</ns0:text>
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_00cjyko">
+          <ns0:text>"Pasta"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+    <ns0:rule id="DecisionRule_15407508-0324-11eb-aeb0-e4a471661778"><ns0:inputEntry id="UnaryTests_15407509-0324-11eb-aeb0-e4a471661778"><ns0:text>"new season"</ns0:text></ns0:inputEntry><ns0:inputEntry id="UnaryTests_1540750a-0324-11eb-aeb0-e4a471661778"><ns0:text /></ns0:inputEntry><ns0:outputEntry id="LiteralExpression_1540750b-0324-11eb-aeb0-e4a471661778"><ns0:text>"burek"</ns0:text></ns0:outputEntry></ns0:rule></ns0:decisionTable>
+  </ns0:decision>
+  <ns0:decision id="Decision_17ch0rc" name="Beverages">
+    <ns0:informationRequirement id="InformationRequirement_0zezofy">
+      <ns0:requiredDecision href="#Decision_1od3j2k" />
+    </ns0:informationRequirement>
+    <ns0:decisionTable id="DecisionTable_1s1sp9e" hitPolicy="FIRST">
+      <ns0:input id="InputClause_0ukx9gm" ns1:inputVariable="dish">
+        <ns0:inputExpression id="LiteralExpression_0nnw0y3" typeRef="string">
+          <ns0:text>Dish</ns0:text>
+        </ns0:inputExpression>
+      </ns0:input>
+      <ns0:input id="InputClause_1ol3rpz" ns1:inputVariable="have_children">
+        <ns0:inputExpression id="LiteralExpression_05t076z" typeRef="boolean">
+          <ns0:text>Guests with children</ns0:text>
+        </ns0:inputExpression>
+      </ns0:input>
+      <ns0:output id="OutputClause_0yffs1s" name="Beverage" typeRef="string" ns2:width="281" />
+      <ns0:rule id="DecisionRule_0jxzltt">
+        <ns0:inputEntry id="UnaryTests_10p1het">
+          <ns0:text>"Spareribs"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_11034u3">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_149herr">
+          <ns0:text>"Aecht Schlenkerla Rauchbier"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_19h5j26">
+        <ns0:inputEntry id="UnaryTests_0tp72f3">
+          <ns0:text>"Stew"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_1qhogfh">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_1bqimf4">
+          <ns0:text>"Guinness"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_1robh5u">
+        <ns0:inputEntry id="UnaryTests_1ixt3nq">
+          <ns0:text>"Roastbeef"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0h9nqf2">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_08qo3f1">
+          <ns0:text>"Bordeaux"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_063by4d">
+        <ns0:inputEntry id="UnaryTests_14jeuxh">
+          <ns0:text>"Steak"</ns0:text>
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0q9fcxr">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_0ys0553">
+          <ns0:text>"Pinot Noir"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_03ajg09">
+        <ns0:inputEntry id="UnaryTests_1dmsiis">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_050zvy9">
+          <ns0:text>true</ns0:text>
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_1meqj5v">
+          <ns0:text>"Apple Juice"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+      <ns0:rule id="DecisionRule_1540750c-0324-11eb-aeb0-e4a471661778"><ns0:inputEntry id="UnaryTests_1540750d-0324-11eb-aeb0-e4a471661778"><ns0:text>"burek"</ns0:text></ns0:inputEntry><ns0:inputEntry id="UnaryTests_1540750e-0324-11eb-aeb0-e4a471661778"><ns0:text /></ns0:inputEntry><ns0:outputEntry id="LiteralExpression_1540750f-0324-11eb-aeb0-e4a471661778"><ns0:text>"jogurt"</ns0:text></ns0:outputEntry></ns0:rule><ns0:rule id="DecisionRule_0co4qkj">
+        <ns0:inputEntry id="UnaryTests_053m8g3">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:inputEntry id="UnaryTests_0q6p64o">
+          <ns0:text />
+        </ns0:inputEntry>
+        <ns0:outputEntry id="LiteralExpression_0pt137p">
+          <ns0:text>"Water"</ns0:text>
+        </ns0:outputEntry>
+      </ns0:rule>
+    </ns0:decisionTable>
+  </ns0:decision>
+  <ns3:DMNDI>
+    <ns3:DMNDiagram>
+      <ns3:DMNShape id="DMNShape_1gre64x" dmnElementRef="Decision_1od3j2k">
+        <ns4:Bounds height="80" width="180" x="160" y="440" />
+      </ns3:DMNShape>
+      <ns3:DMNEdge id="DMNEdge_1l50hhx" dmnElementRef="InformationRequirement_0zezofy">
+        <ns5:waypoint x="250" y="440" />
+        <ns5:waypoint x="520" y="180" />
+        <ns5:waypoint x="520" y="160" />
+      </ns3:DMNEdge>
+      <ns3:DMNShape id="DMNShape_07gi0za" dmnElementRef="Decision_17ch0rc">
+        <ns4:Bounds height="80" width="180" x="430" y="80" />
+      </ns3:DMNShape>
+    </ns3:DMNDiagram>
+  </ns3:DMNDI>
+</ns0:definitions>
