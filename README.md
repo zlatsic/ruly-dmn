@@ -1,14 +1,15 @@
 # Ruly-DMN
 
 `ruly-dmn` is a python package that offers a limited implementation of the DMN
-standard, with additional features. It relies on the `ruly` rule engine to make
-decisions and derive new rules. It can be used as a library or as a command
-line tool.
+standard, with additional features. It relies on the
+[`ruly`](https://ruly.readthedocs.io/en/latest/) rule engine to make decisions
+and derive new rules. It can be used as a library or as a command line tool.
 
 The package assumes that the DMN diagrams are defined as XML files, in the
-format specified by the Camunda modeler. The recommended workflow is to use the
-Camunda modeler to create diagrams and initial decision tables and then pass
-them to functions in this package, so it can make decisions or derive new
+format specified by the [Camunda
+modeler](https://camunda.com/download/modeler/). The recommended workflow is to
+use the Camunda modeler to create diagrams and initial decision tables and then
+pass them to functions in this package, so it can make decisions or derive new
 rules. See thee `examples` directory for examples of working DMN files that can
 be opened in the Camunda modeler.
 
@@ -35,6 +36,8 @@ pip install ruly-dmn
 
 When the package is installed, it can be used either by importing its modules
 (see documentation for more details), or by calling `ruly-dmn` in command line.
+Alternatively, `python -m ruly_dmn.main` may be used instead of the command
+line tool.
 
 ## Development environment
 
@@ -57,4 +60,6 @@ doit list
 Feel free to post any issues - bugs, feature requests, etc. Do not send pull
 requests before an issue for the problem it solves is created. When sending
 pull requests, please reference the issue(s) it attempts to solve and, after
-the review process, it will be accepted.
+the review process, it will be accepted. Make sure that the updated changes
+reflect on the documentation and tests, so they're not left in an inconsistent
+state.
