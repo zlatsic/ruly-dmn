@@ -9,7 +9,8 @@ The package assumes that the DMN diagrams are defined as XML files, in the
 format specified by the Camunda modeler. The recommended workflow is to use the
 Camunda modeler to create diagrams and initial decision tables and then pass
 them to functions in this package, so it can make decisions or derive new
-rules.
+rules. See thee `examples` directory for examples of working DMN files that can
+be opened in the Camunda modeler.
 
 The current limitations, in regard to the complete DMN standard:
 
@@ -45,4 +46,15 @@ pip install -r requirements.txt
 
 This will, among other packages, install `doit`, which is `ruly-dmn`'s build
 tool. Use this tool to perform various actions like testing, building
-documentation, linting check, etc.
+documentation, linting check, etc. For the list of all available tasks, call:
+
+```bash
+doit list
+```
+
+## Contributing
+
+Feel free to post any issues - bugs, feature requests, etc. Do not send pull
+requests before an issue for the problem it solves is created. When sending
+pull requests, please reference the issue(s) it attempts to solve and, after
+the review process, it will be accepted.
