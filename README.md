@@ -10,12 +10,15 @@ format specified by the [Camunda
 modeler](https://camunda.com/download/modeler/). The recommended workflow is to
 use the Camunda modeler to create diagrams and initial decision tables and then
 pass them to functions in this package, so it can make decisions or derive new
-rules. See thee `examples` directory for examples of working DMN files that can
-be opened in the Camunda modeler.
+rules. See the `examples` directory for examples of working DMN files that can
+both be opened in the Camunda modeler and passed to the functions of this
+package.
 
 The current limitations, in regard to the complete DMN standard:
 
   * only available hit policy is FIRST
+  * there are no constraints on enumerated variables when user is entering new
+    rules
   * only available variable comparision (when making decisions) is for equality
   * visual diagrams are not taken into account when creating rule engine rules,
     only decision tables

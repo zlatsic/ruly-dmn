@@ -1,7 +1,7 @@
 from ruly_dmn import dmn
 
 
-d = dmn.parse('./diagram_changed.dmn')
+d = dmn.parse('./diagram.dmn')
 inputs = {'Season': 'new season'}
 
 try:
