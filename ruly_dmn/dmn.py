@@ -9,11 +9,10 @@ class DMN:
     """Class that contains the DMN implementation.
 
     Args:
-        handler (ruly_dmn.common.ModelHandler): model handler
-        rule_factory_cb (Optional[Callable[[ruly_dmn.common.ModelHandler],
-                                           ruly_dmn.common.RuleFactory])]:
-            function that creates a rule factory - if None, a factory that uses
-            console is used"""
+        handler (ruly_dmn.ModelHandler): model handler
+        rule_factory_cb (Optional[Callable]): function that creates a rule
+            factory - if None, a factory that uses console is used. Signature
+            should match the signature of :func:`ruly_dmn.rule_factory_cb`"""
 
     def __init__(self, handler, rule_factory_cb=None):
         self._handler = handler
@@ -73,6 +72,16 @@ class DMN:
             self._handler.update(self._knowledge_base)
 
         return state[decision]
+
+
+def rule_factory_cb(handler):
+    """Placeholder function containing the signature for rule factory callbacks
+
+    Args:
+        handler (ruly_dmn.ModelHandler): model handler
+
+    Returns:
+        ruly_dmn.RuleFactory: rule factory"""
 
 
 class _ConsoleRuleFactory(common.RuleFactory):

@@ -11,8 +11,12 @@ def main():
     args = _create_parser().parse_args()
     handler = CamundaModelerHandler(args.file, args.output_file)
     dmn = ruly_dmn.dmn.DMN(handler)
-    inputs = {k: json.loads(v) for k, v in
-              (a.split('=', 2) for a in args.inputs)}
+    inputs = {}
+    for k, v in (a.split('=', 2) for a in args.inputs):
+        try:
+            inputs[k] = json.loads(v)
+        except json.JSONDecodeError:
+            inputs[k] = v
     print(args.goal, '=', dmn.decide(inputs, args.goal))
 
 
@@ -25,7 +29,10 @@ def _create_parser():
                         help='Name of the goal decision.')
     parser.add_argument('inputs', nargs='*',
                         help='Input value pairs in format '
-                        '<input name>=<json string>, i.e a=1 b='"string"'.')
+                        '<input name>=<value>, where value will be attempted '
+                        'to be parsed as JSON, otherwise it will be '
+                        'interpreted as a string. '
+                        'i.e. a=1 b=xyz c=\'"{"json": "value"}"\'')
     parser.add_argument('--output-file', '-o', metavar='path', type=Path,
                         help='Output DMN file path, in case new rules are '
                         'added. Can be the same path as the input file. If '

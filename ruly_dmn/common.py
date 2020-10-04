@@ -6,7 +6,7 @@ class ModelHandler(abc.ABC):
     @abc.abstractproperty
     @property
     def dependencies(self):
-        """Dict[str, Tuple(str)]: output-input variable name pairs"""
+        """Dict[Tuple(str), Tuple(str)]: output-input variable name pairs"""
 
     @abc.abstractproperty
     @property
