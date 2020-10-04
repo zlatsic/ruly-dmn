@@ -4,11 +4,13 @@ import sys
 from pathlib import Path
 
 import ruly_dmn.dmn
+from ruly_dmn.handlers.camunda_modeler import CamundaModelerHandler
 
 
 def main():
     args = _create_parser().parse_args()
-    dmn = ruly_dmn.dmn.parse(args.file, args.output_file)
+    handler = CamundaModelerHandler(args.file, args.output_file)
+    dmn = ruly_dmn.dmn.DMN(handler)
     inputs = {k: json.loads(v) for k, v in
               (a.split('=', 2) for a in args.inputs)}
     print(args.goal, '=', dmn.decide(inputs, args.goal))
