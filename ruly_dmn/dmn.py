@@ -42,11 +42,8 @@ class DMN:
             rule_factory = self._factory_cb(self._handler)
 
         def post_eval_cb(state, output_name, fired_rules):
-            outputs = [output_names
-                       for output_names in self._handler.dependencies
-                       if output_name in output_names][0]
-
-            new_rule = rule_factory.create_rule(state, fired_rules, outputs)
+            new_rule = rule_factory.create_rule(state, fired_rules,
+                                                output_name)
             if new_rule is not None:
                 if len(fired_rules) == 0:
                     rules.append(new_rule)
@@ -82,10 +79,13 @@ class _ConsoleRuleFactory(common.RuleFactory):
 
     def __init__(self, handler):
         self._rejections = []
-        self._dependencies = handler.dependencies
+        self._handler = handler
 
-    def create_rule(self, state, fired_rules, output_names):
-        input_names = self._dependencies[output_names]
+    def create_rule(self, state, fired_rules, output_name):
+        output_names = [output_names for output_names
+                        in self._handler.dependencies
+                        if output_name in output_names][0]
+        input_names = self._handler.dependencies[output_names]
         input_values = {name: state[name] for name in input_names
                         if state[name] is not None}
         if (input_values, output_names) in self._rejections:
