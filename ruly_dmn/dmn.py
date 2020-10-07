@@ -1,4 +1,5 @@
 from frozendict import frozendict
+import itertools
 import json
 import ruly
 
@@ -19,14 +20,18 @@ class DMN:
         self._knowledge_base = ruly.KnowledgeBase(*handler.rules)
         self._factory_cb = rule_factory_cb
 
+        all_outputs = set(itertools.chain(*handler.dependencies.keys()))
+        all_inputs = set(itertools.chain(*handler.dependencies.values()))
+        self._inputs = all_inputs - all_outputs
+
     @property
     def inputs(self):
         """List[str]: input variables for all available decisions"""
-        return self._knowledge_base.input_variables
+        return self._inputs
 
     def decide(self, inputs, decision):
-        """Attempts to solve for decision based on given inputs. In some cases
-        it might create new rules.
+        """Attempts to solve for decision based on given inputs. May create
+        new rules if the factory creates them.
 
         Args:
             inputs (Dict[str, Any]): name-value pairs of all inputs
@@ -43,7 +48,7 @@ class DMN:
         def post_eval_cb(state, output_name, fired_rules):
             new_rule = rule_factory.create_rule(state, fired_rules,
                                                 output_name)
-            if new_rule is not None:
+            if new_rule is not None and new_rule not in rules:
                 if len(fired_rules) == 0:
                     rules.append(new_rule)
                 else:

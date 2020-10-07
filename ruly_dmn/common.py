@@ -2,6 +2,9 @@ import abc
 
 
 class ModelHandler(abc.ABC):
+    """Abstract class representing a connection between an encoded DMN model
+    and ruly's rules. Implementation should parse initial rules from the model
+    and be available for updates with new rules."""
 
     @abc.abstractproperty
     @property
@@ -24,6 +27,7 @@ class ModelHandler(abc.ABC):
 
 
 class RuleFactory(abc.ABC):
+    """Abstract class whose instances should implement rule creation methods"""
 
     @abc.abstractmethod
     def create_rule(self, state, fired_rules, output_names):
@@ -37,4 +41,5 @@ class RuleFactory(abc.ABC):
                 consequent
 
         Returns:
-            ruly.Rule: generated rule"""
+            Optional[ruly.Rule]: generated rule, if None, new rule couldn't be
+            created with given inputs"""

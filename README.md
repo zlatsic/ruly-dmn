@@ -40,7 +40,8 @@ pip install ruly-dmn
 When the package is installed, it can be used either by importing its modules
 (see documentation for more details), or by calling `ruly-dmn` in command line.
 Alternatively, `python -m ruly_dmn.main` may be used instead of the command
-line tool.
+line tool. Also it's possible to use this tool as a library, consult the
+documentation for that.
 
 ## Development environment
 

@@ -42,3 +42,12 @@ def task_docs():
         subprocess.run(
             ['sphinx-build', 'docs', 'build/docs', *args])
     return {'actions': [run], 'pos_arg': 'args'}
+
+
+def task_dist():
+    """Create dist"""
+    def run(args):
+        args = args or []
+        subprocess.run(['python', 'setup.py', 'sdist', 'bdist_wheel'])
+
+    return {'actions': [run], 'pos_arg': 'args'}
