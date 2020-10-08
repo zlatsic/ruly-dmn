@@ -16,9 +16,10 @@ package.
 
 The current limitations, in regard to the complete DMN standard:
 
-  * only available hit policy is FIRST
+  * only available hit policy are unique, first, 
   * there are no constraints on enumerated variables when user is entering new
     rules
+  * only one output column in decision tables is allowed
   * only available variable comparision (when making decisions) is for equality
   * visual diagrams are not taken into account when creating rule engine rules,
     only decision tables

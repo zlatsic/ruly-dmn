@@ -1,4 +1,5 @@
 import abc
+import enum
 
 
 class ModelHandler(abc.ABC):
@@ -9,13 +10,17 @@ class ModelHandler(abc.ABC):
     @abc.abstractproperty
     @property
     def dependencies(self):
-        """Dict[Tuple(str), Tuple(str)]: output-input variable name pairs"""
+        """Dict[str, Tuple(str)]: output-input variable name pairs"""
 
     @abc.abstractproperty
     @property
     def rules(self):
         """List[ruly.Rule]: all rules available in the model"""
-        return self._rules
+
+    @abc.abstractproperty
+    @property
+    def hit_policies(self):
+        """Dict[str, ruly_dmn.HitPolicy]: hit policies for outputs"""
 
     @abc.abstractmethod
     def update(self, knowledge_base):
@@ -37,9 +42,23 @@ class RuleFactory(abc.ABC):
             state (Dict[str, Any]): state
             fired_rules (List[ruly.Rule]): rules activated for state and output
                 combination
-            output_names (Tuple[str]): output values for the new rule's
+            output_names (str): output values for the new rule's
                 consequent
 
         Returns:
             Optional[ruly.Rule]: generated rule, if None, new rule couldn't be
             created with given inputs"""
+
+
+class HitPolicy(enum.Enum):
+    UNIQUE = enum.auto()
+    FIRST = enum.auto()
+    PRIORITY = enum.auto()
+    ANY = enum.auto()
+    COLLECT = enum.auto()
+    COLLECT_SUM = enum.auto()
+    COLLECT_MIN = enum.auto()
+    COLLECT_MAX = enum.auto()
+    COLLECT_COUNT = enum.auto()
+    RULE_ORDER = enum.auto()
+    OUTPUT_ORDER = enum.auto()
