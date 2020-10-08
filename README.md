@@ -16,9 +16,10 @@ package.
 
 The current limitations, in regard to the complete DMN standard:
 
-  * only available hit policy is FIRST
+  * only available hit policy are unique, first, 
   * there are no constraints on enumerated variables when user is entering new
     rules
+  * only one output column in decision tables is allowed
   * only available variable comparision (when making decisions) is for equality
   * visual diagrams are not taken into account when creating rule engine rules,
     only decision tables
@@ -38,10 +39,10 @@ pip install ruly-dmn
 ## Usage
 
 When the package is installed, it can be used either by importing its modules
-(see documentation for more details), or by calling `ruly-dmn` in command line.
-Alternatively, `python -m ruly_dmn.main` may be used instead of the command
-line tool. Also it's possible to use this tool as a library, consult the
-documentation for that.
+(see [documentation](https://ruly-dmn.readthedocs.io/) for more details), or by
+calling `ruly-dmn` in command line.  Alternatively, `python -m ruly_dmn.main`
+may be used instead of the command line tool. Also it's possible to use this
+tool as a library, consult the documentation for that.
 
 ## Development environment
 

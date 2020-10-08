@@ -37,13 +37,17 @@ class CamundaModelerHandler(common.ModelHandler):
         root = tree.getroot()
         rules = []
         dependencies = {}
+        hit_policies = {}
         rule_ids = {}
         for decision in root.findall(_tags['decision']):
             table = decision.find(_tags['decisionTable'])
             inputs = [e.find(_tags['inputExpression']).find(_tags['text']).text
                       for e in table.findall(_tags['input'])]
             outputs = [e.get('name') for e in table.findall(_tags['output'])]
-            dependencies[tuple(outputs)] = inputs
+            output_name = outputs[0]
+            dependencies[output_name] = inputs
+            hit_policy_str = table.attrib.get('hitPolicy') or 'UNIQUE'
+            hit_policies[output_name] = common.HitPolicy[hit_policy_str]
             for rule_element in table.findall(_tags['rule']):
                 input_values = [
                     e.find(_tags['text']).text
@@ -58,12 +62,12 @@ class CamundaModelerHandler(common.ModelHandler):
                     json.loads(e.find(_tags['text']).text)
                     for e in rule_element.findall(_tags['outputEntry'])]
                 rule = ruly.Rule(antecedent,
-                                 frozendict({output: value for output, value
-                                             in zip(outputs, output_values)}))
+                                 frozendict({output_name: output_values[0]}))
                 rules.append(rule)
                 rule_ids[rule] = rule_element.attrib['id']
         self._tree = tree
         self._dependencies = dependencies
+        self._hit_policies = hit_policies
         self._rule_ids = rule_ids
         self._rules = list(rule_ids)
 
@@ -75,6 +79,10 @@ class CamundaModelerHandler(common.ModelHandler):
     def rules(self):
         return self._rules
 
+    @property
+    def hit_policies(self):
+        return self._hit_policies
+
     def update(self, knowledge_base):
         root = self._tree.getroot()
         for decision in root.findall(_tags['decision']):
@@ -82,8 +90,9 @@ class CamundaModelerHandler(common.ModelHandler):
             inputs = [e.find(_tags['inputExpression']).find(_tags['text']).text
                       for e in table.findall(_tags['input'])]
             outputs = [e.get('name') for e in table.findall(_tags['output'])]
+            output_name = outputs[0]
             rules = [rule for rule in knowledge_base.rules
-                     if set(rule.consequent) == set(outputs)]
+                     if set(rule.consequent) == set([output_name])]
             rule_index_elem_iter = ((i, el) for i, el in
                                     enumerate(table.getchildren())
                                     if el.tag == _tags['rule'])
@@ -98,7 +107,7 @@ class CamundaModelerHandler(common.ModelHandler):
                 if rule_id is not None:
                     elem = None
                     continue
-                rule_element = _rule_to_xml_element(rule, inputs, outputs)
+                rule_element = _rule_to_xml_element(rule, inputs, output_name)
                 self._rule_ids[rule] = rule_element.attrib['id']
                 if elem is None:
                     table.append(rule_element)
@@ -108,7 +117,7 @@ class CamundaModelerHandler(common.ModelHandler):
             self._tree.write(self._dump_path)
 
 
-def _rule_to_xml_element(rule, inputs, outputs):
+def _rule_to_xml_element(rule, inputs, output_name):
     element = xml.etree.ElementTree.Element(
         _tags['rule'],
         attrib={'id': f'DecisionRule_{uuid.uuid1()}'})
@@ -123,12 +132,11 @@ def _rule_to_xml_element(rule, inputs, outputs):
             text_element.text = json.dumps(condition[0].value)
         input_entry_element.append(text_element)
         element.append(input_entry_element)
-    for output_name in outputs:
-        output_entry_element = xml.etree.ElementTree.Element(
-            _tags['outputEntry'],
-            attrib={'id': f'LiteralExpression_{uuid.uuid1()}'})
-        text_element = xml.etree.ElementTree.Element(_tags['text'])
-        text_element.text = json.dumps(rule.consequent[output_name])
-        output_entry_element.append(text_element)
-        element.append(output_entry_element)
+    output_entry_element = xml.etree.ElementTree.Element(
+        _tags['outputEntry'],
+        attrib={'id': f'LiteralExpression_{uuid.uuid1()}'})
+    text_element = xml.etree.ElementTree.Element(_tags['text'])
+    text_element.text = json.dumps(rule.consequent[output_name])
+    output_entry_element.append(text_element)
+    element.append(output_entry_element)
     return element

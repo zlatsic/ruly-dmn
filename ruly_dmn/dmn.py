@@ -38,7 +38,11 @@ class DMN:
             decision (str): name of the decision that should be resolved
 
         Returns:
-            Any: calculated decision"""
+            Any: calculated decision
+
+        Raises:
+            ruly_dmn.HitPolicyViolation: raised if hit policy violation is
+            detected"""
         rules = list(self._knowledge_base.rules)
         if self._factory_cb is None:
             rule_factory = _ConsoleRuleFactory(self._handler)
@@ -46,6 +50,8 @@ class DMN:
             rule_factory = self._factory_cb(self._handler)
 
         def post_eval_cb(state, output_name, fired_rules):
+            fired_rules = _resolve_hit_policy(
+                fired_rules, self._handler.hit_policies[output_name])
             new_rule = rule_factory.create_rule(state, fired_rules,
                                                 output_name)
             if new_rule is not None and new_rule not in rules:
@@ -89,6 +95,10 @@ def rule_factory_cb(handler):
         ruly_dmn.RuleFactory: rule factory"""
 
 
+class HitPolicyViolation(Exception):
+    """Exception raised when a hit policy is violated"""
+
+
 class _ConsoleRuleFactory(common.RuleFactory):
 
     def __init__(self, handler):
@@ -96,28 +106,25 @@ class _ConsoleRuleFactory(common.RuleFactory):
         self._handler = handler
 
     def create_rule(self, state, fired_rules, output_name):
-        output_names = [output_names for output_names
-                        in self._handler.dependencies
-                        if output_name in output_names][0]
-        input_names = self._handler.dependencies[output_names]
+        input_names = self._handler.dependencies[output_name]
         input_values = {name: state[name] for name in input_names
                         if state[name] is not None}
-        if (input_values, output_names) in self._rejections:
+        if (input_values, output_name) in self._rejections:
             return None
         if not self._show_prompts(fired_rules, state, input_names):
             return None
         if len(fired_rules) == 0:
-            question = (f'Unable to decide {output_names} for inputs '
+            question = (f'Unable to decide {output_name} for inputs '
                         f'{input_values}, generate new rule?')
         else:
-            question = (f'Fired rules for {output_names} did not use all '
+            question = (f'Fired rules for {output_name} did not use all '
                         f'available input decisions - {input_values}, would '
                         f'you like to create a new rule that does?')
         if not self._confirm_creation(question):
-            self._rejections.append((input_values, output_names))
+            self._rejections.append((input_values, output_name))
             return None
 
-        rule = self._create_prompt(input_values, output_names)
+        rule = self._create_prompt(input_values, output_name)
         print('Created rule:', rule)
         return rule
 
@@ -138,7 +145,7 @@ class _ConsoleRuleFactory(common.RuleFactory):
             return False
         return True
 
-    def _create_prompt(self, input_values, output_names):
+    def _create_prompt(self, input_values, output_name):
         antecedent = ruly.Expression(
             ruly.Operator.AND, tuple(ruly.EqualsCondition(name, value)
                                      for name, value in input_values.items()
@@ -146,17 +153,33 @@ class _ConsoleRuleFactory(common.RuleFactory):
         print('Please type the expected output values (JSON)')
         print(f'IF {antecedent} THEN')
         assignments = {}
-        for output_name in output_names:
-            value = None
-            while value is None:
-                value_json = input(f'{output_name} = ')
-                try:
-                    value = json.loads(value_json)
-                except json.JSONDecodeError:
-                    print('Invalid JSON string, please try again')
-            assignments[output_name] = value
+        value = None
+        while value is None:
+            value_json = input(f'{output_name} = ')
+            try:
+                value = json.loads(value_json)
+            except json.JSONDecodeError:
+                print('Invalid JSON string, please try again')
+        assignments[output_name] = value
         return ruly.Rule(antecedent, frozendict(assignments))
 
 
 class _CancelEvaluationException(Exception):
     pass
+
+
+def _resolve_hit_policy(fired_rules, hit_policy):
+    if hit_policy == common.HitPolicy.UNIQUE:
+        if len(fired_rules) > 1:
+            raise HitPolicyViolation(f'multiple rules fired for a decision '
+                                     f'with unique hit policy: {fired_rules}')
+        return fired_rules
+    if hit_policy == common.HitPolicy.FIRST:
+        return [fired_rules[0]]
+    if hit_policy == common.HitPolicy.ANY:
+        if not all(r.consequent == fired_rules[0].consequent
+                   for r in fired_rules):
+            raise HitPolicyViolation(f'rules with different outputs '
+                                     f'satisfied, while hit policy is any: '
+                                     f'{fired_rules}')
+        return [fired_rules[0]]
