@@ -38,7 +38,11 @@ class DMN:
             decision (str): name of the decision that should be resolved
 
         Returns:
-            Any: calculated decision"""
+            Any: calculated decision
+
+        Raises:
+            ruly_dmn.HitPolicyViolation: raised if hit policy violation is
+            detected"""
         rules = list(self._knowledge_base.rules)
         if self._factory_cb is None:
             rule_factory = _ConsoleRuleFactory(self._handler)
