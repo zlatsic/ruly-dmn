@@ -180,7 +180,7 @@ def _resolve_hit_policy(fired_rules, hit_policy):
                                      f'with unique hit policy: {fired_rules}')
         return fired_rules
     if hit_policy == common.HitPolicy.FIRST:
-        return [fired_rules[0]]
+        return [fired_rules[0]] if len(fired_rules) > 0 else []
     if hit_policy == common.HitPolicy.ANY:
         if not all(r.consequent == fired_rules[0].consequent
                    for r in fired_rules):
