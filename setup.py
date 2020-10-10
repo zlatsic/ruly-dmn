@@ -8,7 +8,7 @@ with open('version.txt', 'r') as fh:
 
 setuptools.setup(
     name='ruly-dmn',
-    packages=['ruly_dmn'],
+    packages=setuptools.find_packages('.'),
     version=version,
     url='https://github.com/ZlatSic/ruly-dmn',
     author='Zlatan Sičanica',

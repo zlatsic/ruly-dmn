@@ -34,7 +34,6 @@ ptyprocess==0.6.0
 py==1.9.0
 pycparser==2.20
 Pygments==2.7.1
-pyinotify==0.9.6
 pyparsing==2.4.7
 pytest==6.1.1
 pytz==2020.1
