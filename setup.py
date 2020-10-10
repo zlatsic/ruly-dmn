@@ -34,6 +34,5 @@ setuptools.setup(
     },
     install_requires=[
         'ruly',
-        'frozendict'
     ]
 )

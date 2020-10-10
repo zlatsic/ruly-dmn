@@ -20,7 +20,8 @@ The current limitations, in regard to the complete DMN standard:
   * there are no constraints on enumerated variables when user is entering new
     rules
   * only one output column in decision tables is allowed
-  * only available variable comparision (when making decisions) is for equality
+  * only available variable comparision (when making decisions) is for
+    operators equals, greater, greater or equal, less and less or equal
   * visual diagrams are not taken into account when creating rule engine rules,
     only decision tables
   * the package functions are not guarenteed to work if the DMN file is
@@ -41,8 +42,18 @@ pip install ruly-dmn
 When the package is installed, it can be used either by importing its modules
 (see [documentation](https://ruly-dmn.readthedocs.io/) for more details), or by
 calling `ruly-dmn` in command line.  Alternatively, `python -m ruly_dmn.main`
-may be used instead of the command line tool. Also it's possible to use this
-tool as a library, consult the documentation for that.
+may be used instead of the command line tool.
+
+After installation, it should be possible to call ruly-dmn with one of the DMN
+diagrams in the example directories, i.e.:
+
+```bash
+ruly-dmn -o o.dmn examples/example1/diagram.dmn Beverage Season="Spring"
+```
+
+Which should output Beverage = Pinot Noir. The tool also may create new rules
+and, if it does, these rules should be written in `o.dmn` file. For more
+information on how the command line tool works, call `ruly-dmn --help`
 
 ## Development environment
 

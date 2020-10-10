@@ -1,4 +1,3 @@
-from frozendict import frozendict
 import json
 import ruly
 import uuid
@@ -38,7 +37,7 @@ class CamundaModelerHandler(common.ModelHandler):
         rules = []
         dependencies = {}
         hit_policies = {}
-        rule_ids = {}
+        rule_ids = []
         for decision in root.findall(_tags['decision']):
             table = decision.find(_tags['decisionTable'])
             inputs = [e.find(_tags['inputExpression']).find(_tags['text']).text
@@ -61,15 +60,14 @@ class CamundaModelerHandler(common.ModelHandler):
                 output_values = [
                     json.loads(e.find(_tags['text']).text)
                     for e in rule_element.findall(_tags['outputEntry'])]
-                rule = ruly.Rule(antecedent,
-                                 frozendict({output_name: output_values[0]}))
+                rule = ruly.Rule(antecedent, {output_name: output_values[0]})
                 rules.append(rule)
-                rule_ids[rule] = rule_element.attrib['id']
+                rule_ids.append((rule, rule_element.attrib['id']))
         self._tree = tree
         self._dependencies = dependencies
         self._hit_policies = hit_policies
         self._rule_ids = rule_ids
-        self._rules = list(rule_ids)
+        self._rules = [rule for rule, _ in self._rule_ids]
 
     @property
     def dependencies(self):
@@ -103,12 +101,17 @@ class CamundaModelerHandler(common.ModelHandler):
                         elem = next(rule_index_elem_iter)
                     except StopIteration:
                         elem = None
-                rule_id = self._rule_ids.get(rule)
+                rule_ids = [rule_id for saved_rule, rule_id in self._rule_ids
+                            if saved_rule == rule]
+                if len(rule_ids) == 0:
+                    rule_id = None
+                else:
+                    rule_id = rule_ids[0]
                 if rule_id is not None:
                     elem = None
                     continue
                 rule_element = _rule_to_xml_element(rule, inputs, output_name)
-                self._rule_ids[rule] = rule_element.attrib['id']
+                self._rule_ids.append((rule, rule_element.attrib['id']))
                 if elem is None:
                     table.append(rule_element)
                 else:

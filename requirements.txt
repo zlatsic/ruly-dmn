@@ -12,7 +12,6 @@ cryptography==3.1.1
 decorator==4.4.2
 docutils==0.16
 doit==0.33.1
-frozendict==1.2
 idna==2.10
 imagesize==1.2.0
 iniconfig==1.0.1
@@ -43,7 +42,7 @@ readme-renderer==26.0
 requests==2.24.0
 requests-toolbelt==0.9.1
 rfc3986==1.4.0
-ruly==0.0.3
+ruly==0.0.4
 SecretStorage==3.1.2
 six==1.15.0
 snowballstemmer==2.0.0

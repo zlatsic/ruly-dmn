@@ -1,4 +1,3 @@
-from frozendict import frozendict
 import itertools
 import json
 import ruly
@@ -159,9 +158,15 @@ class _ConsoleRuleFactory(common.RuleFactory):
             try:
                 value = json.loads(value_json)
             except json.JSONDecodeError:
-                print('Invalid JSON string, please try again')
+                answer = input(f'JSON parsing failed, is the expected value '
+                               f'string "{value_json}"? (Y/n)') or 'y'
+                if answer == 'n':
+                    continue
+                else:
+                    value = value_json
+                    break
         assignments[output_name] = value
-        return ruly.Rule(antecedent, frozendict(assignments))
+        return ruly.Rule(antecedent, assignments)
 
 
 class _CancelEvaluationException(Exception):

@@ -7,14 +7,20 @@ import ruly_dmn.dmn
 
 class MockModelHandler(ruly_dmn.common.ModelHandler):
 
-    def __init__(self, dependencies={}, rules=[], update_fn=None):
+    def __init__(self, dependencies={}, hit_policies={}, rules=[],
+                 update_fn=None):
         self._dependencies = dependencies
+        self._hit_policies = hit_policies
         self._rules = rules
         self._update_fn = update_fn
 
     @property
     def dependencies(self):
         return self._dependencies
+
+    @property
+    def hit_policies(self):
+        return self._hit_policies
 
     @property
     def rules(self):
@@ -36,8 +42,8 @@ class MockRuleFactory(ruly_dmn.common.RuleFactory):
 
 
 def test_inputs():
-    handler = MockModelHandler({('a', 'b'): ('c', 'd', 'e'),
-                                ('e', ): ('f', 'g')})
+    handler = MockModelHandler({'a': ('c', 'd', 'e'),
+                                'e': ('f', 'g')})
     dmn = ruly_dmn.dmn.DMN(handler)
     assert dmn.inputs == {'c', 'd', 'f', 'g'}
 
@@ -48,7 +54,9 @@ def test_inputs():
       ruly.Rule(ruly.EqualsCondition('y', 2), {'z': 3})], {'x': 1}, 'z', 3),
 ])
 def test_decide(rules, inputs, decision, expected):
-    handler = MockModelHandler(rules=rules)
+    handler = MockModelHandler(hit_policies={k: ruly_dmn.common.HitPolicy.FIRST
+                                             for k in ('y', 'z')},
+                               rules=rules)
     dmn = ruly_dmn.dmn.DMN(handler, lambda _: MockRuleFactory())
     assert dmn.decide(inputs, decision) == expected
 
@@ -71,7 +79,10 @@ def test_factory_called():
         return new_rule
 
     rules = [ruly.Rule(ruly.EqualsCondition('x', 1), {'y': 2})]
-    dmn = ruly_dmn.dmn.DMN(MockModelHandler(rules=rules), factory_cb)
+    dmn = ruly_dmn.dmn.DMN(
+        MockModelHandler(rules=rules,
+                         hit_policies={'y': ruly_dmn.common.HitPolicy.FIRST}),
+        factory_cb)
     dmn.decide({'x': 1}, 'y')
     assert called
     assert create_args == {'state': {'x': 1, 'y': None},
