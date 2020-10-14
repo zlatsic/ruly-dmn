@@ -5,8 +5,8 @@ standard, with additional features. It relies on the
 [`ruly`](https://ruly.readthedocs.io/en/latest/) rule engine to make decisions
 and derive new rules. It can be used as a library or as a command line tool.
 
-The package assumes that the DMN diagrams are defined as XML files, in the
-format specified by the [Camunda
+The command line tool assumes that the DMN diagrams are defined as XML files,
+in the format specified by the [Camunda
 modeler](https://camunda.com/download/modeler/). The recommended workflow is to
 use the Camunda modeler to create diagrams and initial decision tables and then
 pass them to functions in this package, so it can make decisions or derive new
