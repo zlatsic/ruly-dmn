@@ -45,7 +45,7 @@ After installation, it should be possible to call ruly-dmn with one of the DMN
 diagrams in the example directories, i.e.:
 
 ```bash
-ruly-dmn -o o.dmn examples/example1/diagram.dmn Beverage Season="Spring"
+ruly-dmn -o o.dmn examples/0001/diagram.dmn Beverage Season="Spring"
 ```
 
 Which should output Beverage = Pinot Noir. The tool also may create new rules
