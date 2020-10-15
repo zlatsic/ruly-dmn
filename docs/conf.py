@@ -1,3 +1,5 @@
+from pathlib import Path
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -19,8 +21,8 @@ project = 'ruly-dmn'
 copyright = '2020, Zlatan Sicanica'
 author = 'Zlatan Sicanica'
 
-# The full version, including alpha/beta/rc tags
-release = '0.0.0'
+with open(Path(__file__).parents[1] / 'version.txt') as fh:
+    release = fh.read()
 
 
 # -- General configuration ---------------------------------------------------
