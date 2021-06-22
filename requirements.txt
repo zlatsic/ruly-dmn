@@ -34,4 +34,4 @@ sphinxcontrib-programoutput==0.17
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.4
 toml==0.10.2
-urllib3==1.26.4
+urllib3==1.26.5
